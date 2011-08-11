@@ -46,7 +46,6 @@ BOOST_AUTO_TEST_CASE(push_three_to_stack_gives_three)
   BOOST_CHECK_EQUAL(3, retval);
   BOOST_CHECK_EQUAL(3, testMachine_.stack[0]);
 }
-
 BOOST_AUTO_TEST_CASE(push_true_to_stack_gives_one)
 {
   code_.push_back(op_true);
@@ -62,7 +61,6 @@ BOOST_AUTO_TEST_CASE(push_true_to_stack_gives_one)
   BOOST_CHECK_EQUAL(true, retval);
   BOOST_CHECK_EQUAL(true, testMachine_.stack[0]);
 }
-
 BOOST_AUTO_TEST_CASE(push_false_to_stack_gives_zero)
 {
   code_.push_back(op_false);
@@ -78,8 +76,6 @@ BOOST_AUTO_TEST_CASE(push_false_to_stack_gives_zero)
   BOOST_CHECK_EQUAL(false, retval);
   BOOST_CHECK_EQUAL(false, testMachine_.stack[0]);
 }
-
-
 BOOST_AUTO_TEST_CASE(load_three_from_stack_at_eleven_gives_three)
 {
   code_.push_back(op_load);
@@ -112,12 +108,75 @@ BOOST_AUTO_TEST_CASE(store_six_to_stack_at_twelfe_gives_six)
                          testMachine_.stack.begin() + 2)); // +2 is required to satisfy
                                                            // both the return and the store
 
-//  BOOST_CHECK_EQUAL(6, retval);
+  BOOST_CHECK_EQUAL(33, retval);
   BOOST_CHECK_EQUAL(33, testMachine_.stack[0]);
   BOOST_CHECK_EQUAL(6, testMachine_.stack[12 + 2]);
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_CASE(stack_adjust){}
+BOOST_AUTO_TEST_SUITE_END(); // test_vmachine_stack_operations
 
+BOOST_FIXTURE_TEST_SUITE(test_vmachine_program_counter_operations, VmachineFixture)
+BOOST_AUTO_TEST_CASE(jump_if_true)
+{
+/*0*/code_.push_back(op_false);   // op_jump_if should be called 'op_jump_if_not'
+/*1*/code_.push_back(op_jump_if);
+/*2*/code_.push_back(6);          // jump to line 6 (absolute addressing)
+/*3*/code_.push_back(op_int);
+/*4*/code_.push_back(33);
+/*5*/code_.push_back(op_return);
+/*6*/code_.push_back(op_int);
+/*7*/code_.push_back(3);
+/*8*/code_.push_back(op_return);
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(3, retval);
+  BOOST_CHECK_EQUAL(3, testMachine_.stack[0]);
+}
+BOOST_AUTO_TEST_CASE(jump_if_false)
+{
+/*0*/code_.push_back(op_true);   // op_jump_if should be called 'op_jump_if_not'
+/*1*/code_.push_back(op_jump_if);
+/*2*/code_.push_back(6);          // jump to line 6 (absolute addressing)
+/*3*/code_.push_back(op_int);
+/*4*/code_.push_back(33);
+/*5*/code_.push_back(op_return);
+/*6*/code_.push_back(op_int);
+/*7*/code_.push_back(3);
+/*8*/code_.push_back(op_return);
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(33, retval);
+  BOOST_CHECK_EQUAL(33, testMachine_.stack[0]);
+}
+BOOST_AUTO_TEST_CASE(jump)
+{
+/*0*/code_.push_back(op_jump);
+/*1*/code_.push_back(5);          // jump to line 5 (absolute addressing)
+/*2*/code_.push_back(op_int);
+/*3*/code_.push_back(33);
+/*4*/code_.push_back(op_return);
+/*5*/code_.push_back(op_int);
+/*6*/code_.push_back(4);
+/*7*/code_.push_back(op_return);
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(4, retval);
+  BOOST_CHECK_EQUAL(4, testMachine_.stack[0]);
+}
+BOOST_AUTO_TEST_CASE(call_function_returning_four){}
+BOOST_AUTO_TEST_SUITE_END(); // test_vmachine_program_counter_operations
 
 BOOST_FIXTURE_TEST_SUITE(test_vmachine_operators, VmachineFixture)
 
@@ -313,7 +372,6 @@ BOOST_AUTO_TEST_CASE(five_not_equal_three_is_true)
   BOOST_CHECK_EQUAL(true, testMachine_.stack[0]);
 }
 
-
 BOOST_AUTO_TEST_CASE(five_lower_than_five_is_false)
 {
   code_.push_back(op_int);
@@ -349,7 +407,6 @@ BOOST_AUTO_TEST_CASE(five_lower_than_three_is_false)
   BOOST_CHECK_EQUAL(false, retval);
   BOOST_CHECK_EQUAL(false, testMachine_.stack[0]);
 }
-
 
 BOOST_AUTO_TEST_CASE(three_lower_than_five_is_true)
 {
@@ -405,7 +462,6 @@ BOOST_AUTO_TEST_CASE(five_lower_than_or_equal_three_is_false)
   BOOST_CHECK_EQUAL(false, testMachine_.stack[0]);
 }
 
-
 BOOST_AUTO_TEST_CASE(three_lower_than_or_equal_five_is_true)
 {
   code_.push_back(op_int);
@@ -460,7 +516,6 @@ BOOST_AUTO_TEST_CASE(five_greater_than_three_is_true)
   BOOST_CHECK_EQUAL(true, testMachine_.stack[0]);
 }
 
-
 BOOST_AUTO_TEST_CASE(three_greater_than_five_is_false)
 {
   code_.push_back(op_int);
@@ -514,7 +569,6 @@ BOOST_AUTO_TEST_CASE(five_greater_than_or_equal_three_is_true)
   BOOST_CHECK_EQUAL(true, retval);
   BOOST_CHECK_EQUAL(true, testMachine_.stack[0]);
 }
-
 
 BOOST_AUTO_TEST_CASE(three_greater_than_or_equal_five_is_false)
 {
@@ -602,6 +656,6 @@ BOOST_AUTO_TEST_CASE(zero_AND_zero_gives_false)
   BOOST_CHECK_EQUAL(false, retval);
   BOOST_CHECK_EQUAL(false, testMachine_.stack[0]);
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END(); // test_vmachine_operators
 
 
