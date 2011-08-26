@@ -112,7 +112,31 @@ BOOST_AUTO_TEST_CASE(store_six_to_stack_at_twelfe_gives_six)
   BOOST_CHECK_EQUAL(33, testMachine_.stack[0]);
   BOOST_CHECK_EQUAL(6, testMachine_.stack[12 + 2]);
 }
-BOOST_AUTO_TEST_CASE(stack_adjust){}
+BOOST_AUTO_TEST_CASE(stack_adjust)
+{
+  code_.push_back(op_stk_adj);
+  code_.push_back(2);
+  code_.push_back(op_int);
+  code_.push_back(77);
+  code_.push_back(op_return);
+
+  testMachine_.stack[0] = 33; // our return value
+  testMachine_.stack[1] = 34;  // value to store
+  testMachine_.stack[2] = 35;  // value to store
+  testMachine_.stack[3] = 36;  // value to store
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin())); // +2 is required to satisfy
+                                                           // both the return and the store
+
+  BOOST_CHECK_EQUAL(77, retval);
+  BOOST_CHECK_EQUAL(33, testMachine_.stack[0]);
+  BOOST_CHECK_EQUAL(34, testMachine_.stack[1]);
+  BOOST_CHECK_EQUAL(77, testMachine_.stack[2]);
+  BOOST_CHECK_EQUAL(36, testMachine_.stack[3]);
+}
 BOOST_AUTO_TEST_SUITE_END(); // test_vmachine_stack_operations
 
 BOOST_FIXTURE_TEST_SUITE(test_vmachine_program_counter_operations, VmachineFixture)
@@ -175,7 +199,31 @@ BOOST_AUTO_TEST_CASE(jump)
   BOOST_CHECK_EQUAL(4, retval);
   BOOST_CHECK_EQUAL(4, testMachine_.stack[0]);
 }
-BOOST_AUTO_TEST_CASE(call_function_returning_four){}
+BOOST_AUTO_TEST_CASE(call_function_returning_argument_plus_2)
+{
+  /*0*/code_.push_back(op_int);    // push argument ( == 5 )
+  /*1*/code_.push_back(5);
+  /*2*/code_.push_back(op_call);
+  /*3*/code_.push_back(1);
+  /*4*/code_.push_back(8);
+  /*5*/code_.push_back(op_return);
+  /*6*/code_.push_back(255); // no-op
+  /*7*/code_.push_back(255); // no-op
+  /*8*/code_.push_back(op_stk_adj); // adjust stack so we can use the value '5' directly...
+  /*9*/code_.push_back(1);
+  /*10*/code_.push_back(op_int);
+  /*11*/code_.push_back(2);
+  /*12*/code_.push_back(op_add);
+  /*13*/code_.push_back(op_return);
+
+    int retval = 0;
+    BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                           code_.begin(),
+                           testMachine_.stack.begin()));
+
+    BOOST_CHECK_EQUAL(7, retval);
+    BOOST_CHECK_EQUAL(7, testMachine_.stack[0]);
+}
 BOOST_AUTO_TEST_SUITE_END(); // test_vmachine_program_counter_operations
 
 BOOST_FIXTURE_TEST_SUITE(test_vmachine_operators, VmachineFixture)
