@@ -47,6 +47,23 @@ BOOST_AUTO_TEST_CASE(parse_void_func_void_declaration)
   BOOST_CHECK_EQUAL(code_[1], 1);           // int i ... == Single variable on stack
 }
 
+BOOST_AUTO_TEST_CASE(parse_int_func_returning_sum_of_both_arguments)
+{
+  std::string script("int func(arg1, arg2){return arg1 + arg2;}");
+  BOOST_CHECK_NO_THROW(compile(testProgram, script));
+
+  BOOST_CHECK(testProgram.functions.find("func") != NULL);
+  BOOST_REQUIRE_EQUAL(code_.size(), 8U);
+  BOOST_CHECK_EQUAL(code_[0], op_stk_adj);  // adjust stack for function arguments
+  BOOST_CHECK_EQUAL(code_[1], 2);           //
+  BOOST_CHECK_EQUAL(code_[2], op_load);     // currently I'm unsure why the values are loaded...
+  BOOST_CHECK_EQUAL(code_[3], 0);           //
+  BOOST_CHECK_EQUAL(code_[4], op_load);     //
+  BOOST_CHECK_EQUAL(code_[5], 1);           //
+  BOOST_CHECK_EQUAL(code_[6], op_add);
+  BOOST_CHECK_EQUAL(code_[7], op_return);   // return arg
+}
+
 BOOST_AUTO_TEST_CASE(execute_one_add_two_gives_three)
 {
   std::string script(
