@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(store_six_to_stack_at_twelfe_gives_six)
                          testMachine_.stack.begin() + 2)); // +2 is required to satisfy
                                                            // both the return and the store
 
-//  BOOST_CHECK_EQUAL(6, retval);
+  BOOST_CHECK_EQUAL(33, retval);
   BOOST_CHECK_EQUAL(33, testMachine_.stack[0]);
   BOOST_CHECK_EQUAL(6, testMachine_.stack[12 + 2]);
 }
