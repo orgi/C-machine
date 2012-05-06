@@ -179,7 +179,6 @@ int vmachine::execute(
               break;
         }
     }
-    return 0; // TODO(Joerg.Schwaerzler@infineon.com): Implement error handling
-              //                                       for this case
+    return 0; // TODO(orgi): Implement error handling for this case
 }
 
