@@ -1,10 +1,10 @@
-#Fri Jul 22 07:41:33 CEST 2011
+#Sun May 06 14:03:55 CEST 2012
 eclipse.preferences.version=1
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPATH/delimiter=;
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPATH/operation=remove
-environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPLUS_INCLUDE_PATH/delimiter=\:
-environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPLUS_INCLUDE_PATH/operation=append
-environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPLUS_INCLUDE_PATH/value=/home/mac/src/boost_1_46_1
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPLUS_INCLUDE_PATH/delimiter=;
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPLUS_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/CPLUS_INCLUDE_PATH/value=/cygdrive/c/projects/c++/boost_1_46_1
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/C_INCLUDE_PATH/delimiter=;
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/C_INCLUDE_PATH/operation=remove
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.mingw.exe.debug.1781228965.690590183/append=true

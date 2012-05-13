@@ -55,17 +55,40 @@ separated headers per class.
 However - due to some issue in earlier spirit versions - the current unittest won't run using
 anything older than boost v1.47
 
-In addition boost unittests have been introduced to verify the different sub-parsers:
+In addition boost unittests have been introduced
+-- to verify the different sub-parsers:
 * program
 * statement
 * expression
+-- to verify the state machine:
+* vmachine
 
-(4) Next steps:
+(4) HowTo build:
+----------------
+Sources should compile on latest gcc (4.x) as well as within MS Visual Studio compiler (VC2010+).
+There's some eclipse project configured for msys gcc - currently only the test-debug configuration
+is valid.
+
+>>> Dependencies: <<<
+You'll need boost library (currently tested with boost 1.49) headers & a matching boost unit testing
+library e.g. "boost_unit_test_framework-mgw46-mt-sd-1_49".
+
+>>> Create two enironment variables: <<<
+BOOST_INCLUDE should point where the boost sources got extracted - the 'boost' directory has to be
+a subdirectory.
+BOOST_LIB has to point to the library installation path - so that the libs are found in:
+$BOOST_LIB/lib
+
+
+(5) Next steps:
 ---------------
-1) Add parser tests for function calls
-2) Add tests for the virtual machine used to execute the script
-3) Add support for following data types (C99-based): [u]int_8, [u]int_16, [u]int_32
-4) Add support for arrays
-5) Add support for missing operators when comparing against C99 standard (e.g. '++') 
+DONE) Add parser tests for function calls
+DONE) Add tests for the virtual machine used to execute the script
+3a) Add vmachine support for following data types (C99-based): [u]int_8, [u]int_16, [u]int_32
+3b) Add parser support for following data types (C99-based): [u]int_8, [u]int_16, [u]int_32
+4a) Add vmachine support for arrays
+4b) Add parser support for arrays
+5a) Add vmachine support for missing operators when comparing against C99 standard (e.g. '++') 
+5b) Add parser support for missing operators when comparing against C99 standard (e.g. '++') 
 
 /////////////////////////////////////////////////////////////////////////////
