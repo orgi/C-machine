@@ -97,10 +97,10 @@ expression<Iterator>::expression(
         ;
 
     function_call =
-        (functions                           [_a = _1]
+        (functions                           [_a = _1] // address of function...
         >>  '('
         >> -(
-                expr                        [++_b]
+                expr                        [++_b]     // parameters
                 >> *(',' > expr             [++_b])
             )
         >   lit(')')                        [op(_a, _b, _pass)])
