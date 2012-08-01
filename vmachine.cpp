@@ -122,6 +122,10 @@ int vmachine::execute(
                 *stack_ptr++ = *pc++;
                 break;
 
+            case op_short:
+                *stack_ptr++ = 0xFFFF & (*pc++);
+                break;
+
             case op_true:
                 *stack_ptr++ = true;
                 break;

@@ -30,8 +30,8 @@ enum byte_code
     op_and,         //  logical and top two stack entries
     op_or,          //  logical or top two stack entries
 // 14:
-    op_load,        //  load a variable
-    op_store,       //  store a variable
+    op_load,        //  load a 32-bit variable
+    op_store,       //  store a 32-bit variable
 // 16:
     op_int,         //  push constant integer into the stack
     op_true,        //  push constant 0 into the stack
@@ -47,7 +47,9 @@ enum byte_code
 // 24:
     op_print,       // print to console
     op_dump,        // dump to console
-    op_debug        // debug to console ;)
+    op_debug,       // debug to console ;)
+// 26:
+    op_short		// push constant short to stack
 };
 
 

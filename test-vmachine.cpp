@@ -46,6 +46,20 @@ BOOST_AUTO_TEST_CASE(push_three_to_stack_gives_three)
   BOOST_CHECK_EQUAL(3, retval);
   BOOST_CHECK_EQUAL(3, testMachine_.stack[0]);
 }
+BOOST_AUTO_TEST_CASE(push_int_to_stack_as_short_gives_short)
+{
+  code_.push_back(op_short);
+  code_.push_back(0x7FFFF); // longer than 16 bit...
+  code_.push_back(op_return);
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(0xFFFF, retval);
+  BOOST_CHECK_EQUAL(0xFFFF, testMachine_.stack[0]);
+}
 BOOST_AUTO_TEST_CASE(push_true_to_stack_gives_one)
 {
   code_.push_back(op_true);
