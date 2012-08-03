@@ -56,9 +56,9 @@ BOOST_AUTO_TEST_CASE(parse_int_func_returning_sum_of_both_arguments)
   BOOST_REQUIRE_EQUAL(code_.size(), 8U);
   BOOST_CHECK_EQUAL(code_[0], op_stk_adj);  // adjust stack for function arguments
   BOOST_CHECK_EQUAL(code_[1], 2);           //
-  BOOST_CHECK_EQUAL(code_[2], op_load);     //
+  BOOST_CHECK_EQUAL(code_[2], op_load_32);  //
   BOOST_CHECK_EQUAL(code_[3], 0);           // TODO: currently I'm unsure why the values are loaded...
-  BOOST_CHECK_EQUAL(code_[4], op_load);     //
+  BOOST_CHECK_EQUAL(code_[4], op_load_32);  //
   BOOST_CHECK_EQUAL(code_[5], 1);           //
   BOOST_CHECK_EQUAL(code_[6], op_add);
   BOOST_CHECK_EQUAL(code_[7], op_return);   // return arg

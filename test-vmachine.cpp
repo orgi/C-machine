@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(push_false_to_stack_gives_zero)
 }
 BOOST_AUTO_TEST_CASE(load_three_from_stack_at_eleven_gives_three)
 {
-  code_.push_back(op_load);
+  code_.push_back(op_load_32);
   code_.push_back(11);
   code_.push_back(op_return);
 
@@ -106,9 +106,25 @@ BOOST_AUTO_TEST_CASE(load_three_from_stack_at_eleven_gives_three)
   BOOST_CHECK_EQUAL(3, retval);
   BOOST_CHECK_EQUAL(3, testMachine_.stack[0]);
 }
+BOOST_AUTO_TEST_CASE(load_int_from_stack_as_short_gives_short)
+{
+  code_.push_back(op_load_16);
+  code_.push_back(11);
+  code_.push_back(op_return);
+
+  testMachine_.stack[11] = 0x12345678;
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(0x5678, retval);
+  BOOST_CHECK_EQUAL(0x5678, testMachine_.stack[0]);
+}
 BOOST_AUTO_TEST_CASE(store_six_to_stack_at_twelfe_gives_six)
 {
-  code_.push_back(op_store);
+  code_.push_back(op_store_32);
   code_.push_back(12);
   code_.push_back(op_return);
 

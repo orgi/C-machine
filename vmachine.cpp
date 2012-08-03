@@ -109,11 +109,15 @@ int vmachine::execute(
                 stack_ptr[-1] = bool(stack_ptr[-1]) || bool(stack_ptr[0]);
                 break;
 
-            case op_load:
+            case op_load_32:
                 *stack_ptr++ = frame_ptr[*pc++];
                 break;
 
-            case op_store:
+            case op_load_16:
+                *stack_ptr++ = 0xFFFF & (frame_ptr[*pc++]);
+                break;
+
+            case op_store_32:
                 --stack_ptr;
                 frame_ptr[*pc++] = stack_ptr[0];
                 break;

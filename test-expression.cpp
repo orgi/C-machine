@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(parse_i_negate)
   std::string script("-i;");
   BOOST_CHECK_NO_THROW(compile(testExpression, script));
   BOOST_REQUIRE_EQUAL(code_.size(), 3U);
-  BOOST_CHECK_EQUAL(code_[0], op_load);     // load variable
+  BOOST_CHECK_EQUAL(code_[0], op_load_32);     // load variable
   BOOST_CHECK_EQUAL(code_[1], 0);           // variable #0
   BOOST_CHECK_EQUAL(code_[2], op_neg);      // negate
 }
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(parse_not_i)
   std::string script("!i;");
   BOOST_CHECK_NO_THROW(compile(testExpression, script));
   BOOST_REQUIRE_EQUAL(code_.size(), 3U);
-  BOOST_CHECK_EQUAL(code_[0], op_load);     // load int
+  BOOST_CHECK_EQUAL(code_[0], op_load_32);     // load int
   BOOST_CHECK_EQUAL(code_[1], 0);           // variable #0
   BOOST_CHECK_EQUAL(code_[2], op_not);      // negate
 }

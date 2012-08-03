@@ -83,7 +83,7 @@ statement<Iterator>::statement(
 
     assignment_rhs =
             expr
-        >   lit(';')        [op(op_store, _r1)]
+        >   lit(';')        [op(op_store_32, _r1)]
         ;
 
     if_statement =

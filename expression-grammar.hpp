@@ -93,7 +93,7 @@ expression<Iterator>::expression(
                 vars
                 >> !(alnum | '_')           // make sure we have whole words
             ]
-        )                                   [op(op_load, _1)]
+        )                                   [op(op_load_32, _1)]
         ;
 
     function_call =

@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(declare_int_and_init_with_99)
   BOOST_REQUIRE_EQUAL(code_.size(), 4U);
   BOOST_CHECK_EQUAL(code_[0], op_int);       // have int
   BOOST_CHECK_EQUAL(code_[1], 99);           // load value
-  BOOST_CHECK_EQUAL(code_[2], op_store);     // store int
+  BOOST_CHECK_EQUAL(code_[2], op_store_32);  // store int
   BOOST_CHECK_EQUAL(code_[3], 0);            // store at var pos #0
 }
 
@@ -67,11 +67,11 @@ BOOST_AUTO_TEST_CASE(declare_ints_and_init_them_with_1_and_2)
   BOOST_REQUIRE_EQUAL(code_.size(), 8U);
   BOOST_CHECK_EQUAL(code_[0], op_int);      // have int
   BOOST_CHECK_EQUAL(code_[1], 1);           // load value
-  BOOST_CHECK_EQUAL(code_[2], op_store);    // store int
+  BOOST_CHECK_EQUAL(code_[2], op_store_32); // store int
   BOOST_CHECK_EQUAL(code_[3], 0);           // store at var pos #0
   BOOST_CHECK_EQUAL(code_[4], op_int);      // have int
   BOOST_CHECK_EQUAL(code_[5], 2);           // load value
-  BOOST_CHECK_EQUAL(code_[6], op_store);    // store int
+  BOOST_CHECK_EQUAL(code_[6], op_store_32);    // store int
   BOOST_CHECK_EQUAL(code_[7], 1);           // store at var pos #1
 }
 
@@ -87,28 +87,28 @@ BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_no_braket
   std::vector<int>::iterator instruction = code_.begin();
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32); //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store at var pos #0 == i
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 2);           // value #2
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32); //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // store at var pos #1 == j
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 0);
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 1);
   BOOST_CHECK_EQUAL(*(instruction)++, op_lt);
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump_if);
   BOOST_CHECK_EQUAL(*(instruction)++, 21);          // jump to else path if not lower than
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32); //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store into i [==index 0]
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump);     //
   BOOST_CHECK_EQUAL(*(instruction)++, 25);          // jump right after the else
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 2);           // value #2
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32); //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store into i [==index 0]
 }
 
@@ -128,28 +128,28 @@ BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_brakets)
   std::vector<int>::iterator instruction = code_.begin();
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store at var pos #0 == i
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 2);           // value #2
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // store at var pos #1 == j
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 0);
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 1);
   BOOST_CHECK_EQUAL(*(instruction)++, op_lt);
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump_if);
   BOOST_CHECK_EQUAL(*(instruction)++, 21);          // jump to else path if not lower than
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store into i [==index 0]
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump);     //
   BOOST_CHECK_EQUAL(*(instruction)++, 25);          // jump right after the else
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 2);           // value #2
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store into i [==index 0]
 }
 
@@ -163,25 +163,25 @@ BOOST_AUTO_TEST_CASE(parse_while_i_less_than_j_plusplus_i_no_brakets)
   std::vector<int>::iterator instruction = code_.begin();
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store at var pos #0 == i
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 2);           // value #2
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // store at var pos #1 == j
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 0);
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 1);
   BOOST_CHECK_EQUAL(*(instruction)++, op_lt);
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump_if);
   BOOST_CHECK_EQUAL(*(instruction)++, 24);          // jump to out of the while()
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);     //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);     //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // load i
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
   BOOST_CHECK_EQUAL(*(instruction)++, op_add);      // add to i
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store into i
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump);     //
   BOOST_CHECK_EQUAL(*(instruction)++, 8);           // loop
@@ -199,25 +199,25 @@ BOOST_AUTO_TEST_CASE(parse_while_i_less_than_j_plusplus_i_brakets)
   std::vector<int>::iterator instruction = code_.begin();
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store at var pos #0 == i
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 2);           // value #2
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // store at var pos #1 == j
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 0);
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);
   BOOST_CHECK_EQUAL(*(instruction)++, 1);
   BOOST_CHECK_EQUAL(*(instruction)++, op_lt);
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump_if);
   BOOST_CHECK_EQUAL(*(instruction)++, 24);          // jump to out of the while()
-  BOOST_CHECK_EQUAL(*(instruction)++, op_load);     //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_load_32);     //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // load i
   BOOST_CHECK_EQUAL(*(instruction)++, op_int);      //
   BOOST_CHECK_EQUAL(*(instruction)++, 1);           // value #1
   BOOST_CHECK_EQUAL(*(instruction)++, op_add);      // add to i
-  BOOST_CHECK_EQUAL(*(instruction)++, op_store);    //
+  BOOST_CHECK_EQUAL(*(instruction)++, op_store_32);    //
   BOOST_CHECK_EQUAL(*(instruction)++, 0);           // store into i
   BOOST_CHECK_EQUAL(*(instruction)++, op_jump);     //
   BOOST_CHECK_EQUAL(*(instruction)++, 8);           // loop
