@@ -42,16 +42,85 @@ BOOST_FIXTURE_TEST_SUITE(test_statementlist, StatementFixture)
 
 BOOST_AUTO_TEST_CASE(parse_int_i)
 {
-  std::string script("int i;");
+  std::string script("int32_t i;");
   BOOST_CHECK(testStatementList.variables.find("i") == NULL);
   BOOST_CHECK_NO_THROW(compile(testStatementList, script));
   BOOST_CHECK_EQUAL(code_.size(), 0U);
-  BOOST_CHECK(testStatementList.variables.find("i") != NULL);
+  BOOST_REQUIRE(testStatementList.variables.find("i") != NULL);
+  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->size, 4);
+  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->sign, true);
+  BOOST_CHECK_EQUAL(testStatementList.add_var_2.f.vars.find("i")->id,
+      testStatementList.variables.find("i")->id);
 }
+
+BOOST_AUTO_TEST_CASE(parse_uint_i)
+{
+  std::string script("uint32_t i;");
+  BOOST_CHECK(testStatementList.variables.find("i") == NULL);
+  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+  BOOST_CHECK_EQUAL(code_.size(), 0U);
+  BOOST_REQUIRE(testStatementList.variables.find("i") != NULL);
+  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->size, 4);
+  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->sign, false);
+  BOOST_CHECK_EQUAL(testStatementList.add_var_2.f.vars.find("i")->id,
+      testStatementList.variables.find("i")->id);
+}
+
+//BOOST_AUTO_TEST_CASE(parse_int16_t_i)
+//{
+//  std::string script("int_16_t i;");
+//  BOOST_CHECK(testStatementList.variables.find("i") == NULL);
+//  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+//  BOOST_CHECK_EQUAL(code_.size(), 0U);
+//  BOOST_REQUIRE(testStatementList.variables.find("i") != NULL);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->size, 4);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->sign, true);
+//  BOOST_CHECK_EQUAL(testStatementList.add_var_2.f.vars.find("i")->id,
+//      testStatementList.variables.find("i")->id);
+//}
+//
+//BOOST_AUTO_TEST_CASE(parse_uint_i)
+//{
+//  std::string script("uint i;");
+//  BOOST_CHECK(testStatementList.variables.find("i") == NULL);
+//  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+//  BOOST_CHECK_EQUAL(code_.size(), 0U);
+//  BOOST_REQUIRE(testStatementList.variables.find("i") != NULL);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->size, 4);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->sign, false);
+//  BOOST_CHECK_EQUAL(testStatementList.add_var_2.f.vars.find("i")->id,
+//      testStatementList.variables.find("i")->id);
+//}
+//
+//BOOST_AUTO_TEST_CASE(parse_int_i)
+//{
+//  std::string script("int i;");
+//  BOOST_CHECK(testStatementList.variables.find("i") == NULL);
+//  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+//  BOOST_CHECK_EQUAL(code_.size(), 0U);
+//  BOOST_REQUIRE(testStatementList.variables.find("i") != NULL);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->size, 4);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->sign, true);
+//  BOOST_CHECK_EQUAL(testStatementList.add_var_2.f.vars.find("i")->id,
+//      testStatementList.variables.find("i")->id);
+//}
+//
+//BOOST_AUTO_TEST_CASE(parse_uint_i)
+//{
+//  std::string script("uint i;");
+//  BOOST_CHECK(testStatementList.variables.find("i") == NULL);
+//  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+//  BOOST_CHECK_EQUAL(code_.size(), 0U);
+//  BOOST_REQUIRE(testStatementList.variables.find("i") != NULL);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->size, 4);
+//  BOOST_CHECK_EQUAL(testStatementList.variables.find("i")->sign, false);
+//  BOOST_CHECK_EQUAL(testStatementList.add_var_2.f.vars.find("i")->id,
+//      testStatementList.variables.find("i")->id);
+//}
 
 BOOST_AUTO_TEST_CASE(declare_int_and_init_with_99)
 {
-  std::string script("int i = 99;");
+  std::string script("int32_t i = 99;");
   BOOST_CHECK_NO_THROW(compile(testStatementList, script));
   BOOST_REQUIRE_EQUAL(code_.size(), 4U);
   BOOST_CHECK_EQUAL(code_[0], op_int);       // have int
@@ -62,7 +131,7 @@ BOOST_AUTO_TEST_CASE(declare_int_and_init_with_99)
 
 BOOST_AUTO_TEST_CASE(declare_ints_and_init_them_with_1_and_2)
 {
-  std::string script("int i = 1; int j = 2;");
+  std::string script("int32_t i = 1; int32_t j = 2;");
   BOOST_CHECK_NO_THROW(compile(testStatementList, script));
   BOOST_REQUIRE_EQUAL(code_.size(), 8U);
   BOOST_CHECK_EQUAL(code_[0], op_int);      // have int
@@ -77,7 +146,7 @@ BOOST_AUTO_TEST_CASE(declare_ints_and_init_them_with_1_and_2)
 
 BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_no_brakets)
 {
-  std::string script("int i = 1; int j = 2;\
+  std::string script("int32_t i = 1; int32_t j = 2;\
       if (i < j)"
       "  i = 1;"
       "else"
@@ -114,7 +183,7 @@ BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_no_braket
 
 BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_brakets)
 {
-  std::string script("int i = 1; int j = 2;\
+  std::string script("int32_t i = 1; int32_t j = 2;\
       if (i < j)"
       "{"
       "  i = 1;"
@@ -155,7 +224,7 @@ BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_brakets)
 
 BOOST_AUTO_TEST_CASE(parse_while_i_less_than_j_plusplus_i_no_brakets)
 {
-  std::string script("int i = 1; int j = 2;\
+  std::string script("int32_t i = 1; int32_t j = 2;\
       while (i < j)"
       "  i = i + 1;");
   BOOST_CHECK_NO_THROW(compile(testStatementList, script));
@@ -189,7 +258,7 @@ BOOST_AUTO_TEST_CASE(parse_while_i_less_than_j_plusplus_i_no_brakets)
 
 BOOST_AUTO_TEST_CASE(parse_while_i_less_than_j_plusplus_i_brakets)
 {
-  std::string script("int i = 1; int j = 2;\
+  std::string script("int32_t i = 1; int32_t j = 2;\
       while (i < j)"
       "{"
       "  i = i + 1;"

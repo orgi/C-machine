@@ -66,11 +66,12 @@ statement<Iterator>::statement(
         [
             (boost::spirit::ascii::string("int") [_a = true]
               | boost::spirit::ascii::string("uint") [_a = false]
-                )[_b = 4]
+                )
+            >> boost::spirit::ushort_ [_b = _1 / 8]
+            >> "_t"
             >>  !(alnum | '_')  // make sure we have whole words
         ]
         >   !var_ref        // make sure the variable isn't redeclared
-//        >   identifier      [add_var_2(_1, _b, _a)]
         >   identifier      [add_var_2(_1, _b, _a)]
         >   (';' | ('=' > assignment_rhs(ref(nvars)-1)))
         ;

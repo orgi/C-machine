@@ -38,7 +38,7 @@ BOOST_FIXTURE_TEST_SUITE(test_program, ProgramFixture)
 
 BOOST_AUTO_TEST_CASE(parse_void_func_void_declaration)
 {
-  std::string script("void func(){int i;}");
+  std::string script("void func(){int32_t i;}");
   BOOST_CHECK_NO_THROW(compile(testProgram, script));
 
   BOOST_CHECK(testProgram.functions.find("func") != NULL);
@@ -68,8 +68,8 @@ BOOST_AUTO_TEST_CASE(execute_one_add_two_gives_three)
 {
   std::string script(
       "int main(argc, argv){\n"\
-      "int one = 1;\n"\
-      "int two = 2;\n"\
+      "int32_t one = 1;\n"\
+      "int32_t two = 2;\n"\
       "two = 3;\n"\
       "return 0;\n"\
       "}"
