@@ -60,6 +60,20 @@ BOOST_AUTO_TEST_CASE(push_int_to_stack_as_short_gives_short)
   BOOST_CHECK_EQUAL(0xFFFF, retval);
   BOOST_CHECK_EQUAL(0xFFFF, testMachine_.stack[0]);
 }
+BOOST_AUTO_TEST_CASE(push_int_to_stack_as_byte_gives_byte)
+{
+  code_.push_back(op_byte);
+  code_.push_back(0x7FFFF); // longer than 16 bit...
+  code_.push_back(op_return);
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(0xFF, retval);
+  BOOST_CHECK_EQUAL(0xFF, testMachine_.stack[0]);
+}
 BOOST_AUTO_TEST_CASE(push_true_to_stack_gives_one)
 {
   code_.push_back(op_true);
@@ -121,6 +135,22 @@ BOOST_AUTO_TEST_CASE(load_int_from_stack_as_short_gives_short)
 
   BOOST_CHECK_EQUAL(0x5678, retval);
   BOOST_CHECK_EQUAL(0x5678, testMachine_.stack[0]);
+}
+BOOST_AUTO_TEST_CASE(load_int_from_stack_as_byte_gives_byte)
+{
+  code_.push_back(op_load_8);
+  code_.push_back(11);
+  code_.push_back(op_return);
+
+  testMachine_.stack[11] = 0x12345678;
+
+  int retval = 0;
+  BOOST_REQUIRE_NO_THROW(retval = testMachine_.execute(code_,
+                         code_.begin(),
+                         testMachine_.stack.begin()));
+
+  BOOST_CHECK_EQUAL(0x78, retval);
+  BOOST_CHECK_EQUAL(0x78, testMachine_.stack[0]);
 }
 BOOST_AUTO_TEST_CASE(store_six_to_stack_at_twelfe_gives_six)
 {

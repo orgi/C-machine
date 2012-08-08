@@ -117,6 +117,10 @@ int vmachine::execute(
                 *stack_ptr++ = 0xFFFF & (frame_ptr[*pc++]);
                 break;
 
+            case op_load_8:
+                *stack_ptr++ = 0xFF & (frame_ptr[*pc++]);
+                break;
+
             case op_store_32:
                 --stack_ptr;
                 frame_ptr[*pc++] = stack_ptr[0];
@@ -128,6 +132,10 @@ int vmachine::execute(
 
             case op_short:
                 *stack_ptr++ = 0xFFFF & (*pc++);
+                break;
+
+            case op_byte:
+                *stack_ptr++ = 0xFF & (*pc++);
                 break;
 
             case op_true:
