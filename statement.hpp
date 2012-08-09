@@ -42,7 +42,7 @@ struct statement : boost::spirit::qi::grammar<Iterator, white_space<Iterator> >
         statement_, statement_list, compound_statement
       , return_statement;
 
-    boost::spirit::qi::rule<Iterator, boost::spirit::qi::locals<bool, int>, white_space_> var_decl;
+    boost::spirit::qi::rule<Iterator, boost::spirit::qi::locals<symbol_type>, white_space_> var_decl;
     boost::spirit::qi::rule<Iterator, boost::spirit::qi::locals<int>, white_space_> if_statement;
     boost::spirit::qi::rule<Iterator, boost::spirit::qi::locals<int, int>, white_space_> while_statement;
     boost::spirit::qi::rule<Iterator, int(), boost::spirit::qi::locals<int>, white_space_> print_statement;

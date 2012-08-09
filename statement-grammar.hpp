@@ -32,6 +32,39 @@ namespace{
   } internalFunctions;
 }
 
+namespace{
+  struct DataTypes
+    :public boost::spirit::qi::symbols<char, symbol_type>
+  {
+      DataTypes()
+    {
+      symbol_type type = {false, 1};
+      add("uint8_t",  type);
+      type.sign = true;
+      type.size = 1;
+      add("int8_t",   type);
+      type.sign = false;
+      type.size = 2;
+      add("uint16_t", type);
+      type.sign = true;
+      type.size = 2;
+      add("int16_t",  type);
+      type.sign = false;
+      type.size = 4;
+      add("uint32_t", type);
+      type.sign = true;
+      type.size = 4;
+      add("int32_t",  type);
+      type.sign = false;
+      type.size = 8;
+      add("uint64_t", type);
+      type.sign = true;
+      type.size = 8;
+      add("int64_t",  type);
+    }
+  } dataTypes;
+}
+
 template <typename Iterator>
 statement<Iterator>::statement(
     std::vector<int>& code,
@@ -64,15 +97,11 @@ statement<Iterator>::statement(
     var_decl =
         lexeme
         [
-            (boost::spirit::ascii::string("int") [_a = true]
-              | boost::spirit::ascii::string("uint") [_a = false]
-                )
-            >> boost::spirit::ushort_ [_b = _1 / 8]
-            >> "_t"
+            dataTypes [_a = _1]
             >>  !(alnum | '_')  // make sure we have whole words
         ]
         >   !var_ref        // make sure the variable isn't redeclared
-        >   identifier      [add_var_2(_1, _b, _a)]
+        >   identifier      [add_var_2(_1, _a)]
         >   (';' | ('=' > assignment_rhs(ref(nvars)-1)))
         ;
 

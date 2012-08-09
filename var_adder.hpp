@@ -11,11 +11,16 @@
 
 #include <boost/spirit/include/qi.hpp>
 
+struct symbol_type
+{
+  bool sign;
+  int size;
+};
+
 struct symbol_info
 {
-    int id;
-    int size;
-    bool sign;
+  int id;
+  symbol_type type;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,7 +50,7 @@ struct var_adder
 ///////////////////////////////////////////////////////////////////////////////
 struct var_adder2
 {
-    template <typename, typename, typename>
+    template <typename, typename>
     struct result { typedef void type; };
 
     var_adder2(boost::spirit::qi::symbols<char, int>& oldVars,
@@ -54,10 +59,10 @@ struct var_adder2
     {
     }
 
-    void operator()(std::string const& var, const int size, const bool sign) const
+    void operator()(std::string const& var, const symbol_type type) const
     {
       oldVars.add(var.begin(), var.end(), nvars);
-      symbol_info info = {nvars++, size, sign};
+      symbol_info info = {nvars++, type};
       vars.add(var.begin(), var.end(), info);
     };
 
