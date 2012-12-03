@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(parse_uint8_t_i)
       testStatementList.variables.find("i")->id);
 }
 
-BOOST_AUTO_TEST_CASE(declare_int_and_init_with_99)
+BOOST_AUTO_TEST_CASE(declare_int_32_t_and_init_with_99)
 {
   std::string script("int32_t i = 99;");
   BOOST_CHECK_NO_THROW(compile(testStatementList, script));
@@ -129,7 +129,29 @@ BOOST_AUTO_TEST_CASE(declare_int_and_init_with_99)
   BOOST_CHECK_EQUAL(code_[3], 0);            // store at var pos #0
 }
 
-BOOST_AUTO_TEST_CASE(declare_ints_and_init_them_with_1_and_2)
+BOOST_AUTO_TEST_CASE(declare_int_16_t_and_init_with_99)
+{
+  std::string script("int16_t i = 99;");
+  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+  BOOST_REQUIRE_EQUAL(code_.size(), 4U);
+  BOOST_CHECK_EQUAL(code_[0], op_int);       // have int
+  BOOST_CHECK_EQUAL(code_[1], 99);           // load value
+  BOOST_CHECK_EQUAL(code_[2], op_store_32);  // store int
+  BOOST_CHECK_EQUAL(code_[3], 0);            // store at var pos #0
+}
+
+BOOST_AUTO_TEST_CASE(declare_int_8_t_and_init_with_99)
+{
+  std::string script("int8_t i = 99;");
+  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+  BOOST_REQUIRE_EQUAL(code_.size(), 4U);
+  BOOST_CHECK_EQUAL(code_[0], op_int);       // have int
+  BOOST_CHECK_EQUAL(code_[1], 99);           // load value
+  BOOST_CHECK_EQUAL(code_[2], op_store_32);  // store int
+  BOOST_CHECK_EQUAL(code_[3], 0);            // store at var pos #0
+}
+
+BOOST_AUTO_TEST_CASE(declare_int32_ts_and_init_them_with_1_and_2)
 {
   std::string script("int32_t i = 1; int32_t j = 2;");
   BOOST_CHECK_NO_THROW(compile(testStatementList, script));
@@ -142,6 +164,25 @@ BOOST_AUTO_TEST_CASE(declare_ints_and_init_them_with_1_and_2)
   BOOST_CHECK_EQUAL(code_[5], 2);           // load value
   BOOST_CHECK_EQUAL(code_[6], op_store_32);    // store int
   BOOST_CHECK_EQUAL(code_[7], 1);           // store at var pos #1
+}
+
+BOOST_AUTO_TEST_CASE(assign_int16_t_var_to_int16_t_var)
+{
+  std::string script("int16_t i = 1; int16_t j = 2; i = j;");
+  BOOST_CHECK_NO_THROW(compile(testStatementList, script));
+  BOOST_REQUIRE_EQUAL(code_.size(), 12U);
+  BOOST_CHECK_EQUAL(code_[0], op_int);      // have int
+  BOOST_CHECK_EQUAL(code_[1], 1);           // load value
+  BOOST_CHECK_EQUAL(code_[2], op_store_32); // store int
+  BOOST_CHECK_EQUAL(code_[3], 0);           // store at var pos #0
+  BOOST_CHECK_EQUAL(code_[4], op_int);      // have int
+  BOOST_CHECK_EQUAL(code_[5], 2);           // load value
+  BOOST_CHECK_EQUAL(code_[6], op_store_32);    // store int
+  BOOST_CHECK_EQUAL(code_[7], 1);           // store at var pos #1
+  BOOST_CHECK_EQUAL(code_[8], op_load_32);
+  BOOST_CHECK_EQUAL(code_[9], 1);
+  BOOST_CHECK_EQUAL(code_[10], op_store_32);    // store int
+  BOOST_CHECK_EQUAL(code_[11], 0);           // store at var pos #1
 }
 
 BOOST_AUTO_TEST_CASE(parse_if_i_less_than_j_i_equals_1_else_i_equals_2_no_brakets)

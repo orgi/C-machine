@@ -48,13 +48,13 @@ enum byte_code
     op_print,       // print to console
     op_dump,        // dump to console
     op_debug,       // debug to console ;)
-// 26:
+// 27:
     op_short,       // push constant short to stack
     op_byte,        // push constant short to stack
-// 28:
+// 29:
     op_load_16,     //  load a 16-bit variable
     op_store_16,    //  store a 16-bit variable
-// 30:
+// 31:
     op_load_8,      //  load a 8-bit variable
     op_store_8      //  store a 8-bit variable
 };
