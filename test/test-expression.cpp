@@ -24,7 +24,7 @@ struct ExpressionFixture
   ,testExpression(code_, testVariables, testFunctions)
   {
     const std::string i = "i";
-    const std::string j = "j";
+    const std::string j = "ju";
     testVariables.add(i.begin(), i.end(), 0);
     testVariables.add(j.begin(), j.end(), 0);
   };
